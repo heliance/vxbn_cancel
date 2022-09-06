@@ -63,7 +63,7 @@ while True:
                 filtered_list.append(phone)
         print("List of read DID numbers:")
         print(filtered_list)
-        print("Total numbers:" + str(len(filtered_list)))
+        print("Total numbers:" + str(len(filtered_list)) + "\n")
 
         for i in filtered_list:
             conn = http.client.HTTPSConnection(os.getenv("stg_url"))
@@ -93,7 +93,7 @@ while True:
         else:
             print("List of DID IDs that are going to be cancelled:")
             print(dids_to_delete)
-            print("Total IDs: "+str(len(dids_to_delete)))
+            print("Total IDs: "+str(len(dids_to_delete))+ "\n")
             print("Press 'Cancel DIDs' to cancel all the numbers in the list. ")
 
     elif event == "Cancel DIDs" and not dids_to_delete:
