@@ -6,7 +6,7 @@ import http.client
 import json
 from dotenv import load_dotenv
 
-# need to sort out how to handle cwd for a user.
+# need to sort out working directories.
 working_directory = os.getcwd()
 
 
@@ -57,7 +57,7 @@ while True:
         new_nums = convert_csv_array(csv_address)
         for i in new_nums:
             phone = ''.join(i).replace("[,],'", "")
-            if phone in filtered_list or not phone:
+            if phone in filtered_list or not phone or len(phone) > 15:
                 continue
             else:
                 filtered_list.append(phone)
@@ -77,6 +77,8 @@ while True:
             data = res.read()
             result = xmltodict.parse(data.decode("utf-8"))
             conn.close()
+            # Need to add cancellationDate key to the numbers
+            # print(result)
             try:
                 for key1, val1 in result.items():
                     dids_dict = val1["dids"]
@@ -93,7 +95,7 @@ while True:
         else:
             print("List of DID IDs that are going to be cancelled:")
             print(dids_to_delete)
-            print("Total IDs: "+str(len(dids_to_delete))+ "\n")
+            print("Total IDs: "+str(len(dids_to_delete)) + "\n")
             print("Press 'Cancel DIDs' to cancel all the numbers in the list. ")
 
     elif event == "Cancel DIDs" and not dids_to_delete:
