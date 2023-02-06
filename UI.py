@@ -6,9 +6,6 @@ import http.client
 import json
 from dotenv import load_dotenv
 
-# need to sort out working directories.
-working_directory = os.getcwd()
-
 
 def configure():
     """Configures env vars from .env file."""
@@ -31,14 +28,12 @@ def convert_csv_array(csv_address):
 sg.theme("DarkAmber")
 layout = [
             [sg.Text("Choose a CSV file with Numbers to cancel:")],
-            [sg.InputText(size=(60, 15), key="-FILE_PATH-"),
-             sg.FileBrowse(initial_folder=working_directory, file_types=[("CSV Files", "*.csv")])],
+            [sg.InputText(size=(60, 15), key="-FILE_PATH-"), sg.FileBrowse(initial_folder=os.getcwd(),
+                                                                           file_types=[("CSV Files", "*.csv")])],
             [sg.Output(size=(67, 15))],
             [sg.Button('Submit .csv'), sg.Exit(), sg.Button('Cancel DIDs')]
         ]
-
 window = sg.Window("Voxbone Cancellation Tool v0.4", layout)
-
 
 filtered_list = []
 dids_to_delete = []
@@ -91,7 +86,7 @@ while True:
                                                   "Skipping...")
                 continue
         if not dids_to_delete:
-            print("We can't find any IDs to delete. Check the numbers list.")
+            print("We can't find any IDs to cancel. Check the numbers list.")
         else:
             print("List of DID IDs that are going to be cancelled:")
             print(dids_to_delete)
@@ -120,10 +115,10 @@ while True:
         try:
             for key1, val1 in result.items():
                 deleted = val1["numberCancelled"]
-                print("Amount of numbers deleted: "+deleted)
+                print("Amount of numbers canceled: "+deleted)
                 dids_to_delete = []
                 filtered_list = []
         except KeyError:
-            print("There are no numbers to delete.")
+            print("There are no numbers to cancel.")
 
 window.close()
